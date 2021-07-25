@@ -44,3 +44,11 @@ vim.o.hlsearch = false                            -- search behavior
 vim.o.incsearch = true                            -- search behavior
 vim.o.foldmethod = 'expr'                         -- fold method
 vim.o.foldexpr = 'nvim_treesitter#foldexpr()'     -- fold expr
+
+-- Highlight on yank
+vim.api.nvim_exec([[
+  augroup YankHighlight
+    autocmd!
+    autocmd TextYankPost * silent! lua vim.highlight.on_yank()
+  augroup end
+]], false)

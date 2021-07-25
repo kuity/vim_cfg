@@ -1,7 +1,17 @@
+local execute = vim.api.nvim_command
+local install_path = vim.fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
+  execute('!git clone https://github.com/wbthomason/packer.nvim '..install_path)
+end
+
 -- Only required if you have packer configured as `opt`
 vim.cmd [[packadd packer.nvim]]
--- Only if your version of Neovim doesn't have https://github.com/neovim/neovim/pull/12632 merged
--- vim._update_package_paths()
+vim.api.nvim_exec([[
+  augroup Packer
+    autocmd!
+    autocmd BufWritePost plugins.lua PackerCompile
+  augroup end
+]], false)
 
 return require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'        -- Packer can manage itself
@@ -82,7 +92,6 @@ return require('packer').startup(function(use)
 
   -- Vimwiki, taskwiki
   use { "vimwiki/vimwiki", config = function() require'extra/myvimwiki' end }
-  use { "tbabej/taskwiki" }
 
   -- LSP + treesitter
   use "neovim/nvim-lsp"                             -- LSP

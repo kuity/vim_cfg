@@ -11,5 +11,7 @@ vim.g.vimwiki_ext2syntax = {
 }
 
 vim.g.vimwiki_markdown_link_ext = 1   -- Makes vimwiki markdown links as [text](text.md) instead of [text](text)
-vim.g.taskwiki_markup_syntax = 'markdown'
-vim.g.markdown_folding = 'expr'
+
+-- specific mappings
+vim.api.nvim_set_keymap('n', '<Leader><CR>', '<Plug>VimwikiFollowLink', {silent=true})
+vim.api.nvim_set_keymap('n', '<Leader><Backspace>', '<Plug>VimwikiGoBackLink', {silent=true})

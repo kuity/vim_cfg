@@ -29,7 +29,11 @@ local mappings = {
     { "<C-l>", "<C-\\><C-N><C-w>l" },
 
     -- Quick Save
-    { "<C-s>", "<Esc>:up<CR>"}
+    { "<C-s>", "<Esc>:up<CR>"},
+
+    -- Add move line shortcuts
+    { "<A-j>", "<Esc>:m .+1<CR>==gi"},
+    { "<A-k>", "<Esc>:m .-2<CR>==gi"},
   },
   n = { -- Normal mode
     -- Better window movement
@@ -60,7 +64,10 @@ local mappings = {
     { "<Leader>f", ":Telescope find_files find_command=rg,--ignore,--hidden,--files prompt_prefix=🔍<CR>" },
     { "<Leader>r", ":Telescope live_grep<CR>" },
     { "<Leader>b", ":Telescope buffers<CR>" },
-    -- {'<C-TAB>', 'compe#complete()', {noremap = true, silent = true, expr = true}},
+    { "<Leader>cb", ":Telescope current_buffer_fuzzy_find<CR>" },
+    { "<Leader>t", ":Telescope tags<CR>" },
+    { "<Leader>fc", ":Telescope git_commits<CR>" },
+    { "<Leader>fb", ":Telescope git_branches<CR>" },
 
     -- Quick Save
     { "<C-s>", ":up<CR>"},
@@ -84,6 +91,11 @@ local mappings = {
     { "<Leader>ga", ":G add<CR>" },
     { "<Leader>gc", ":G commit<CR>" },
     { "<Leader>gp", ":G push<CR>" },
+
+    -- Add move line shortcuts
+    { "<A-j>", ":m .+1<CR>==" },
+    { "<A-k>", ":m .-2<CR>==" },
+
   },
   t = { -- Terminal mode
     -- Terminal window navigation
@@ -103,6 +115,10 @@ local mappings = {
 
     -- wrap with quotes
     { "<Leader>q", ':<\',\'>norm!I"<c-v><Esc>A"<CR>' },
+
+    -- Add move line shortcuts
+    { "<A-j>", ':m \'>+1<CR>gv=gv' },
+    { "<A-k>", ':m \'<-2<CR>gv=gv' },
   },
   x = { -- Visual mode
     -- Move selected line / block of text in visual mode

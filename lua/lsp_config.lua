@@ -19,10 +19,6 @@ local mapper = function(mode, key, result, opts)
   vim.api.nvim_buf_set_keymap(0, mode, key, result, opts)
 end
 
-local lsp_mapper = function(mode, key, result)
-  mapper(mode, key, "<cmd>lua " .. result .. "<CR>", {noremap = true, silent = true})
-end
-
 local custom_attach = function(client, bufnr)
   -- Only autocomplete in lsp
   compe.setup({
@@ -47,6 +43,12 @@ local custom_attach = function(client, bufnr)
   mapper("i",  "<C-f>", "compe#scroll({ 'delta': +4 })", {silent = true, expr = true, noremap = true})
   mapper("i",  "<C-d>", "compe#scroll({ 'delta': -4 })", {silent = true, expr = true, noremap = true})
 
+  -- lsp native mappings
+  mapper("n",  "<Leader>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", {silent = true, noremap = true})
+  mapper("n",  "<Leader>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", {silent = true, noremap = true})
+  mapper("n",  "<Leader>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", {silent = true, noremap = true})
+  mapper("n",  "<Leader>af", "<cmd>lua vim.lsp.buf.formatting()<CR>", {silent = true, noremap = true})
+
   -- Lspsaga mappings
   lspsaga.init_lsp_saga()
   mapper("n", "gh", "<cmd>lua require'lspsaga.provider'.lsp_finder()<CR>", {silent = true, noremap = true})
@@ -64,12 +66,18 @@ local custom_attach = function(client, bufnr)
 
   -- load lsp trouble
   trouble.setup()
-  lsp_mapper("n" , "<F6>"    , "vim.lsp.stop_client(vim.lsp.buf_get_clients(0))")
+  mapper("n" , "<F6>", "<cmd>lua vim.lsp.stop_client(vim.lsp.buf_get_clients(0))", {silent = true, noremap = true})
+
+  -- Diagnostic text colors
+  vim.cmd[[ hi LspDiagnosticsVirtualTextError guifg = Red ctermfg = Red ]]
+  vim.cmd[[ hi LspDiagnosticsVirtualTextWarning guifg = Yellow ctermfg = Yellow ]]
+  vim.cmd[[ hi LspDiagnosticsVirtualTextInformation guifg = White ctermfg = White ]]
+  vim.cmd[[ hi LspDiagnosticsVirtualTextHint guifg = White ctermfg = White ]]
+
   -- use omnifunc
   vim.opt.omnifunc = 'v:lua.vim.lsp.omnifunc'
 end
 
--- Set up clients
 -- python
 lspconfig.pyright.setup({
   on_attach = function(client)
@@ -162,3 +170,20 @@ local opts = {
 }
 
 require('rust-tools').setup(opts)
+
+-- autoformatting
+lspconfig.efm.setup {
+  init_options = {documentFormatting = true},
+  filetypes = {"lua"},
+  settings = {
+    rootMarkers = {".git/"},
+    languages = {
+      lua = {
+        {
+          formatCommand = "lua-format -i --indent-width=2 --tab-width=2 --no-break-after-operator --break-after-table-lb",
+          formatStdin = true
+        }
+      }
+    }
+  }
+}
