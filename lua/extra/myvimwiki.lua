@@ -11,6 +11,15 @@ vim.g.vimwiki_ext2syntax = {
 }
 
 vim.g.vimwiki_markdown_link_ext = 1   -- Makes vimwiki markdown links as [text](text.md) instead of [text](text)
+vim.g.vimwiki_folding = 'custom'
+
+vim.api.nvim_exec([[
+  augroup Vimwiki
+    autocmd!
+    autocmd FileType vimwiki setlocal syntax=markdown
+    autocmd FileType vimwiki setlocal foldenable
+  augroup END
+]], false)
 
 -- specific mappings
 vim.api.nvim_set_keymap('n', '<Leader><CR>', '<Plug>VimwikiFollowLink', {silent=true})

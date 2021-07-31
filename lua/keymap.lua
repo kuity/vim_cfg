@@ -11,6 +11,13 @@ local function register_mappings(mappings, default_options)
   end
 end
 
+vim.api.nvim_exec([[
+function! ExecuteMacroOverVisualRange()
+  echo "@".getcmdline()
+  execute ":'<,'>normal @".nr2char(getchar())
+endfunction
+]], false)
+
 local mappings = {
   i = { -- Insert mode
     -- I hate escape
@@ -119,6 +126,9 @@ local mappings = {
     -- Add move line shortcuts
     { "<A-j>", ':m \'>+1<CR>gv=gv' },
     { "<A-k>", ':m \'<-2<CR>gv=gv' },
+
+    -- Norm shortcut on visual selection
+    { "e", ":g/^/norm " },
   },
   x = { -- Visual mode
     -- Move selected line / block of text in visual mode
@@ -128,6 +138,9 @@ local mappings = {
     -- Move current line / block with Alt-j/k ala vscode.
     { "<A-j>", ":m '>+1<CR>gv-gv" },
     { "<A-k>", ":m '<-2<CR>gv-gv" },
+
+    -- Execute a macro
+    { "@", ":<C-u>call ExecuteMacroOverVisualRange()<CR>" },
   },
   [""] = {
     -- Toggle the QuickFix window
