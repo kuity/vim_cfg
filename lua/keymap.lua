@@ -68,7 +68,7 @@ local mappings = {
     { "[q", ":cprev<CR>" },
 
     -- Telescope
-    { "<Leader>f", ":Telescope find_files find_command=rg,--ignore,--hidden,--files prompt_prefix=🔍<CR>" },
+    { "<Leader>f", [[:lua require('telescope.builtin').find_files{ find_command = {'rg', '--files', '--no-ignore', '--hidden', '-g', '!.git/'}, prompt_prefix='🔍'}<CR>]] },
     { "<Leader>r", ":Telescope live_grep<CR>" },
     { "<Leader>b", ":Telescope buffers<CR>" },
     { "<Leader>cb", ":Telescope current_buffer_fuzzy_find<CR>" },
@@ -103,6 +103,11 @@ local mappings = {
     { "<A-j>", ":m .+1<CR>==" },
     { "<A-k>", ":m .-2<CR>==" },
 
+    -- Nvim Tree
+    { "<C-n>", ":NvimTreeToggle<CR>" },
+    { "<Leader>nf", ":NvimTreeFindFile<CR>" },
+    { "<Leader>nr", ":NvimTreeRefresh<CR>" },
+
   },
   t = { -- Terminal mode
     -- Terminal window navigation
@@ -121,7 +126,7 @@ local mappings = {
     { "<Leader>p", '"+p' },
 
     -- wrap with quotes
-    { "<Leader>q", ':<\',\'>norm!I"<c-v><Esc>A"<CR>' },
+    { "<Leader>q", [[:norm!I"<c-v><Esc>A"<CR>]] },
 
     -- Add move line shortcuts
     { "<A-j>", ':m \'>+1<CR>gv=gv' },

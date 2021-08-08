@@ -50,7 +50,7 @@ local custom_attach = function(client, bufnr)
   mapper("n",  "<Leader>af", "<cmd>lua vim.lsp.buf.formatting()<CR>", {silent = true, noremap = true})
 
   -- Lspsaga mappings
-  lspsaga.init_lsp_saga()
+  lspsaga.init_lsp_saga{code_action_prompt={enable=false,}}
   mapper("n", "gh", "<cmd>lua require'lspsaga.provider'.lsp_finder()<CR>", {silent = true, noremap = true})
   mapper("n", "ga", "<cmd>lua require('lspsaga.codeaction').code_action()<CR>", {silent = true, noremap = true})
   mapper("v", "ga", "<cmd>lua require('lspsaga.codeaction').code_action()<CR>", {silent = true, noremap = true})

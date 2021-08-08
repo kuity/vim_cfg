@@ -48,6 +48,7 @@ return require('packer').startup(function(use)
             }
           },
         },
+        file_ignore_patterns = { ".git/*" },
       }
     end
   }
@@ -99,11 +100,15 @@ return require('packer').startup(function(use)
   use "folke/lsp-trouble.nvim"                      -- inline diagnostic info
   use {
     "nvim-treesitter/nvim-treesitter",              -- treesitter
+    branch = '0.5-compat',
     run = ":TSUpdate",
-    config = function() 
+    config = function()
       require'nvim-treesitter.configs'.setup {
         ensure_installed = 'maintained',
-        highlight = {enable = true},
+        highlight = {
+          enable = true,
+          disable = { "html" },
+        },
         indent = {enable = true},
       }
     end
@@ -123,4 +128,8 @@ return require('packer').startup(function(use)
   }
 
   use "airblade/vim-rooter"  -- vim rooter
+
+  -- directory explorer
+  use { "kyazdani42/nvim-tree.lua" }
+
 end)
