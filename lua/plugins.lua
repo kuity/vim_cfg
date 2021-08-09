@@ -54,12 +54,27 @@ return require('packer').startup(function(use)
   }
 
   -- Colorscheme
+  --use {
+  --  'nanotech/jellybeans.vim',
+  --  config = function()
+  --      vim.cmd([[let g:jellybeans_overrides = {'background': { 'ctermbg': 'none', '256ctermbg': 'none', 'guibg': 'none'}}]])
+  --      vim.api.nvim_command('colorscheme jellybeans')
+  --  end,
+  --}
+
   use {
-    'nanotech/jellybeans.vim',
+    'mhartington/oceanic-next',
     config = function()
-        vim.cmd([[let g:jellybeans_overrides = {'background': { 'ctermbg': 'none', '256ctermbg': 'none', 'guibg': 'none'}}]])
-        vim.api.nvim_command('colorscheme jellybeans')
-    end,
+        vim.cmd "let g:oceanic_next_terminal_bold = 1"
+        vim.cmd "let g:oceanic_next_terminal_italic = 1"
+        vim.cmd "colorscheme OceanicNext"
+        vim.cmd "hi Normal guibg=NONE ctermbg=NONE"
+        vim.cmd "hi LineNr guibg=NONE ctermbg=NONE"
+        vim.cmd "hi SignColumn guibg=NONE ctermbg=NONE"
+        vim.cmd "hi EndOfBuffer guibg=NONE ctermbg=NONE"
+        -- vim.api.nvim_command('colorscheme OceanicNext')
+      --
+    end
   }
 
   -- Git integration
