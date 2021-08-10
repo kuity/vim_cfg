@@ -27,7 +27,7 @@ vim.o.ignorecase = true                           -- Ignore case
 vim.o.smartcase = true                            -- If upper case in search, do not ignore
 vim.o.swapfile = false                            -- Do not create swapfile for new buffers
 vim.o.backup = false                              -- Do not create backup files
-vim.o.undodir = "/home/kuity/.vim/undodir"        -- Set undodir
+vim.o.undodir = vim.env.HOME .. "/.vim/undodir"   -- Set undodir
 vim.o.undofile = true                             -- Enable undofile
 vim.o.mouse = "a"                                 -- Enable mouse support
 vim.o.cursorline = true                           -- Highlight cursor line
@@ -42,5 +42,18 @@ vim.api.nvim_exec([[
   augroup YankHighlight
     autocmd!
     autocmd TextYankPost * silent! lua vim.highlight.on_yank()
+  augroup end
+]], false)
+
+
+-- Delete whitespace on save
+vim.api.nvim_exec([[
+  function TrimWhiteSpace()
+    %s/\s*$//
+    ''
+  endfunction
+  augroup StripWhitespace
+    autocmd!
+    autocmd BufWritePre * call TrimWhiteSpace()
   augroup end
 ]], false)
