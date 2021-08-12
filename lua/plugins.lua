@@ -72,8 +72,6 @@ return require('packer').startup(function(use)
         vim.cmd "hi LineNr guibg=NONE ctermbg=NONE"
         vim.cmd "hi SignColumn guibg=NONE ctermbg=NONE"
         vim.cmd "hi EndOfBuffer guibg=NONE ctermbg=NONE"
-        -- vim.api.nvim_command('colorscheme OceanicNext')
-      --
     end
   }
 
