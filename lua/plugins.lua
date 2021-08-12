@@ -72,8 +72,6 @@ return require('packer').startup(function(use)
         vim.cmd "hi LineNr guibg=NONE ctermbg=NONE"
         vim.cmd "hi SignColumn guibg=NONE ctermbg=NONE"
         vim.cmd "hi EndOfBuffer guibg=NONE ctermbg=NONE"
-        -- vim.api.nvim_command('colorscheme OceanicNext')
-      --
     end
   }
 
@@ -142,7 +140,13 @@ return require('packer').startup(function(use)
     },
   }
 
-  use "airblade/vim-rooter"  -- vim rooter
+  -- For auto cd
+  use {
+    "airblade/vim-rooter",
+    config = function()
+        vim.cmd "let g:rooter_change_directory_for_non_project_files = 'current'"
+    end
+  }
 
   -- directory explorer
   use { "kyazdani42/nvim-tree.lua" }
