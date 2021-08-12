@@ -68,7 +68,7 @@ local mappings = {
     { "[q", ":cprev<CR>" },
 
     -- Telescope
-    { "<Leader>f", [[:lua require('telescope.builtin').find_files{ find_command = {'rg', '--files', '--no-ignore', '--hidden', '-g', '!.git/'}, prompt_prefix='🔍'}<CR>]] },
+    { "<Leader>ff", [[:lua require('telescope.builtin').find_files{ find_command = {'rg', '--files', '--no-ignore', '--hidden', '-g', '!.git/'}, prompt_prefix='🔍'}<CR>]] },
     { "<Leader>r", ":Telescope live_grep<CR>" },
     { "<Leader>b", ":Telescope buffers<CR>" },
     { "<Leader>cb", ":Telescope current_buffer_fuzzy_find<CR>" },
