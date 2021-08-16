@@ -15,8 +15,6 @@ vim.api.nvim_exec([[
 
 return require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'        -- Packer can manage itself
-  use { "nvim-lua/popup.nvim" }       -- popup windows
-  use { "nvim-lua/plenary.nvim" }     -- utility functions
 
   -- Fuzzy finder
   use {
@@ -54,14 +52,6 @@ return require('packer').startup(function(use)
   }
 
   -- Colorscheme
-  --use {
-  --  'nanotech/jellybeans.vim',
-  --  config = function()
-  --      vim.cmd([[let g:jellybeans_overrides = {'background': { 'ctermbg': 'none', '256ctermbg': 'none', 'guibg': 'none'}}]])
-  --      vim.api.nvim_command('colorscheme jellybeans')
-  --  end,
-  --}
-
   use {
     'mhartington/oceanic-next',
     config = function()
@@ -137,7 +127,27 @@ return require('packer').startup(function(use)
     requires = {
         "hrsh7th/vim-vsnip",                        -- ...w/ snippet integration
         "hrsh7th/vim-vsnip-integ",
+        "rafamadriz/friendly-snippets",             -- snippets
     },
+    config = function()
+      require('compe').setup {
+        enabled = true,
+        autocomplete = true;
+        preselect = 'enable',
+        min_length = 1,
+        source = {
+          -- Passing a dict enables the completion source
+          -- Menu is sorted by priority highest -> lowest
+          vsnip     = {priority = 100},
+          nvim_lsp    = {priority = 90},
+          nvim_treesitter = {priority = 86},
+          nvim_lua    = {priority = 85},
+          buffer      = {priority = 80},
+          path      = {priority = 70},
+          calc      = {priority = 60},
+        },
+      }
+    end
   }
 
   -- For auto cd

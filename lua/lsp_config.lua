@@ -1,6 +1,5 @@
 local lspconfig = require('lspconfig')
 local trouble = require('trouble')
-local compe = require('compe')
 local lspsaga = require('lspsaga')
 local LSP_PATH = ""
 local my_os = ""
@@ -20,29 +19,6 @@ local mapper = function(mode, key, result, opts)
 end
 
 local custom_attach = function(client, bufnr)
-  -- Only autocomplete in lsp
-  compe.setup({
-    enabled = true,
-    preselect = 'disable',
-    source = {
-      -- Passing a dict enables the completion source
-      -- Menu is sorted by priority highest -> lowest
-      vsnip     = {priority = 100},
-      nvim_lsp    = {priority = 90},
-      nvim_treesitter = {priority = 86},
-      nvim_lua    = {priority = 85},
-      buffer      = {priority = 80},
-      path      = {priority = 70},
-    },
-  }, 0) -- Only current buffer
-
-  -- Compe mappings
-  mapper("i", "<C-o>", "compe#complete()", {silent = true, expr = true, noremap = true})
-  mapper("i", "<C-y>", "compe#confirm()", {silent = true, expr = true, noremap = true})
-  mapper("i", "<C-e>", "compe#close()", {silent = true, expr = true, noremap = true})
-  mapper("i",  "<C-f>", "compe#scroll({ 'delta': +4 })", {silent = true, expr = true, noremap = true})
-  mapper("i",  "<C-d>", "compe#scroll({ 'delta': -4 })", {silent = true, expr = true, noremap = true})
-
   -- lsp native mappings
   mapper("n",  "<Leader>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", {silent = true, noremap = true})
   mapper("n",  "<Leader>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", {silent = true, noremap = true})
