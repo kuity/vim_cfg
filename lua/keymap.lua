@@ -41,14 +41,6 @@ local mappings = {
     -- Add move line shortcuts
     { "<A-j>", "<Esc>:m .+1<CR>==gi"},
     { "<A-k>", "<Esc>:m .-2<CR>==gi"},
-
-    -- Compe
-    { "<C-o>", "compe#complete()", {silent = true, expr = true, noremap = true} },
-    { "<C-y>", "compe#confirm()", {silent = true, expr = true, noremap = true} },
-    { "<C-e>", "compe#close()", {silent = true, expr = true, noremap = true} },
-    { "<C-f>", "compe#scroll({ 'delta': +4 })", {silent = true, expr = true, noremap = true} },
-    { "<C-d>", "compe#scroll({ 'delta': -4 })", {silent = true, expr = true, noremap = true} },
-
   },
   n = { -- Normal mode
     -- Better window movement
@@ -68,8 +60,8 @@ local mappings = {
     { "<A-k>", ":m .-2<CR>==" },
 
     -- insert empty lines
-    { "<CR>", "o<Esc>" },
-    { "<BS>", "O<Esc>" },
+    { "<A-CR>", "o<Esc>" },
+    { "<A-BS>", "O<Esc>" },
 
     -- QuickFix
     { "]q", ":cnext<CR>" },
