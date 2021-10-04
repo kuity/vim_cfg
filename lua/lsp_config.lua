@@ -1,6 +1,6 @@
 local lspconfig = require('lspconfig')
 local trouble = require('trouble')
-local lspsaga = require('lspsaga')
+local cmp = require'cmp'
 local LSP_PATH = ""
 local my_os = ""
 USER = vim.fn.expand('$USER')
@@ -25,21 +25,6 @@ local custom_attach = function(client, bufnr)
   mapper("n",  "<Leader>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", {silent = true, noremap = true})
   mapper("n",  "<Leader>af", "<cmd>lua vim.lsp.buf.formatting()<CR>", {silent = true, noremap = true})
 
-  -- Lspsaga mappings
-  lspsaga.init_lsp_saga{code_action_prompt={enable=false,}}
-  mapper("n", "gh", "<cmd>lua require'lspsaga.provider'.lsp_finder()<CR>", {silent = true, noremap = true})
-  mapper("n", "ga", "<cmd>lua require('lspsaga.codeaction').code_action()<CR>", {silent = true, noremap = true})
-  mapper("v", "ga", "<cmd>lua require('lspsaga.codeaction').code_action()<CR>", {silent = true, noremap = true})
-  mapper("n", "K", "<cmd>lua require('lspsaga.codeaction').code_action()<CR>", {silent = true, noremap = true})
-  mapper("n", "C-f", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>", {silent = true, noremap = true})
-  mapper("n", "C-b", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>", {silent = true, noremap = true})
-  mapper("n", "gs", "<cmd>lua require('lspsaga.signaturehelp').signature_help()<CR>", {silent = true, noremap = true})
-  mapper("n", "gr", "<cmd>lua require('lspsaga.rename').rename()<CR>", {silent = true, noremap = true})
-  mapper("n", "gd", "gd <cmd>lua require'lspsaga.provider'.preview_definition()<CR>", {silent = true, noremap = true})
-  mapper("n", "<Leader>sd", "<cmd>lua require'lspsaga.diagnostic'.show_line_diagnostics()<CR>", {silent = true, noremap = true})
-  mapper("n", "[d", "<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_prev()<CR>", {silent = true, noremap = true})
-  mapper("n", "]d", "<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_next()<CR>", {silent = true, noremap = true})
-
   -- load lsp trouble
   trouble.setup()
   mapper("n" , "<F6>", "<cmd>lua vim.lsp.stop_client(vim.lsp.buf_get_clients(0))", {silent = true, noremap = true})
@@ -53,6 +38,28 @@ local custom_attach = function(client, bufnr)
   -- use omnifunc
   vim.opt.omnifunc = 'v:lua.vim.lsp.omnifunc'
 end
+
+cmp.setup({
+  snippet = {
+    expand = function(args)
+      -- For `vsnip` user.
+      vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` user.
+    end,
+  },
+  mapping = {
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.close(),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+  },
+  sources = {
+    { name = 'nvim_lsp' },
+    -- For vsnip user.
+    { name = 'vsnip' },
+    { name = 'buffer' },
+  }
+})
 
 -- python
 lspconfig.pyright.setup({
@@ -69,12 +76,22 @@ lspconfig.pyright.setup({
         useLibraryCodeForTypes = true
       }
     }
-  }
+  },
+  capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 })
 
-lspconfig.tsserver.setup{on_attach = custom_attach} -- typescript
-lspconfig.yamlls.setup{on_attach = custom_attach} -- yaml
-lspconfig.bashls.setup{on_attach = custom_attach} -- bash
+lspconfig.tsserver.setup{
+  on_attach = custom_attach,
+  capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+} -- typescript
+lspconfig.yamlls.setup{
+  on_attach = custom_attach,
+  capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+} -- yaml
+lspconfig.bashls.setup{
+  on_attach = custom_attach,
+  capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+} -- bash
 
 -- lua (optional)
 local sumneko_root_path = LSP_PATH .. "lua-language-server"
@@ -99,6 +116,7 @@ if vim.fn.executable(sumneko_binary) then
         }
       },
     },
+    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
   })
 end
 
@@ -142,7 +160,8 @@ local opts = {
       mapper("n", "<Leader>rh", "<cmd>RustHoverActions<CR>", {silent = true, noremap = true})
       mapper("n", "<Leader>rm", "<cmd>RustExpandMacro<CR>", {silent = true, noremap = true})
     end,
-  }
+  },
+  capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 }
 
 require('rust-tools').setup(opts)

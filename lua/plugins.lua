@@ -97,10 +97,7 @@ return require('packer').startup(function(use)
   -- Vimwiki, taskwiki
   use { "vimwiki/vimwiki", config = function() require'extra/myvimwiki' end }
 
-  -- LSP + treesitter
-  use "neovim/nvim-lsp"                             -- LSP
-  use "neovim/nvim-lspconfig"                       -- basic configurations for LSP client
-  use "folke/lsp-trouble.nvim"                      -- inline diagnostic info
+  -- treesitter
   use {
     "nvim-treesitter/nvim-treesitter",              -- treesitter
     branch = '0.5-compat',
@@ -119,17 +116,21 @@ return require('packer').startup(function(use)
   use "nvim-treesitter/nvim-treesitter-textobjects" -- custom text objects from treesitter
   -- use "nvim-treesitter/nvim-treesitter-refactor"    -- nice refactoring helpers
   use { "simrat39/rust-tools.nvim" }
-  use { "glepnir/lspsaga.nvim" }                    -- nice lsp UI
 
   -- Completion
   use {
     "hrsh7th/nvim-cmp",                           -- autocomplete
     requires = {
+        "neovim/nvim-lsp",                          -- LSP
+        "neovim/nvim-lspconfig",                    -- basic configurations for LSP client
         "hrsh7th/vim-vsnip",
+        "hrsh7th/cmp-vsnip",
         "hrsh7th/cmp-buffer",
+        'hrsh7th/cmp-nvim-lsp',
         "rafamadriz/friendly-snippets",             -- snippets
+        "folke/lsp-trouble.nvim",                   -- inline diagnostic info
     },
-    config = function() require'extra/cmpcfg' end
+    config = function() require'lsp_config' end
   }
 
   -- For auto cd
@@ -141,6 +142,9 @@ return require('packer').startup(function(use)
   }
 
   -- directory explorer
-  use { "kyazdani42/nvim-tree.lua" }
+  use {
+    "kyazdani42/nvim-tree.lua",
+    config = function() require'nvim-tree'.setup {} end
+  }
 
 end)
